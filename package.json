@@ -1,0 +1,12 @@
+{
+    "name": "filterjs",
+    "description":"A javascript template engine which can support filter.",
+    "keywords":["template","engine","filter"],
+    "maintainers":[{"name":"houyhea","emal":"houyhea@126.com","web":"http://www.filterjs.com"}],
+    "repositories":"https://github.com/houyhea/filterjs",
+    "homepage":"http://www.filterjs.com",
+    "author":"houyhea",
+    "version": "0.1.0",
+    "dependencies": {},
+    "main": "filter.js"
+}
