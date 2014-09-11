@@ -1,4 +1,4 @@
-#timespanjs
+#filterjs
 ##简介
 一款支持过滤器功能的轻量级模版引擎。
 
