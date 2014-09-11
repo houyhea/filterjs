@@ -8,8 +8,36 @@
     var VERSION = "0.1.0",
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
-        funcNameReg = /^[_a-zA-Z]\w*/;
-    g_filters = {};
+        funcNameReg = /^[_a-zA-Z]\w*/,
+        g_template = {},
+        g_filters = {};
+
+    function extend(a, b) {
+        if (!b || !a)
+            return a;
+
+        for (var i in b) {
+            if (b.hasOwnProperty(i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (b.hasOwnProperty("toString")) {
+            a.toString = b.toString;
+        }
+
+        if (b.hasOwnProperty("valueOf")) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function compile(str) {
+
+
+    }
+
     var Filterjs = function (tpl, config) {
 
     }
@@ -37,6 +65,9 @@
                 if (typeof a[1] !== "function")
                     throw "need a function param.";
                 this.filters[a[0]] = a[1];
+            }
+            else {
+                extend(this.filters, a[0]);
             }
         },
         config: function (config) {
