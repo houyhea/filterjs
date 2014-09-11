@@ -15,6 +15,14 @@
     Filterjs.prototype = {
         render: function (data) {
             return this.tpl;
+        },
+        register:function()
+        {
+
+        },
+        config:function(config)
+        {
+
         }
 
     }
