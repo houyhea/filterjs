@@ -57,7 +57,7 @@
             return g_templates[str];
         }
         var sreg = /{{#([^#]+)#}}/g;//语句
-        var vreg = /{{([^0-9][^#]+)}}/g;//变量
+        var vreg = /{{([^0-9][^#]*)}}/g;//变量
         str = str.replace(/[\r\t\n]/g, ' ');
         str = str.replace(/"/g, "'");//双引号变单引号，原因：构造的函数里，字符串通过双引号。所以里面的字符串必须用单引号。
         str = str.replace(vreg,function (s, w) {
@@ -153,7 +153,7 @@
             if (typeof value === 'string')
             {
                 if (value.length > len)
-                    return value.substring(0, len - 3) + '...';
+                    return value.substring(0, len) + '...';
                 return value;
             }
             return value;
