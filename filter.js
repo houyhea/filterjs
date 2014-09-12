@@ -5,7 +5,7 @@
  */
 (function () {
     'use strict';
-    var VERSION = "0.1.0",
+    var VERSION = "0.1.2",
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
         funcNameReg = /^[_a-zA-Z]\w*/,

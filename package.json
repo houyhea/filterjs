@@ -6,7 +6,7 @@
     "repositories":"https://github.com/houyhea/filterjs",
     "homepage":"http://www.filterjs.com",
     "author":"houyhea",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "dependencies": {},
     "main": "filter.js"
 }
