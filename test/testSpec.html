@@ -5,8 +5,41 @@
     <title>filter test</title>
     <script src="jQuery-1.11.0.min.js"></script>
     <script src="../filter.js"></script>
+    <style>
+        .item
+        {
+            margin:5px;
+
+        }
+
+    </style>
 </head>
 <body>
 
+<div class="item">template:<textarea id="tpl"  style="width:500px;height:200px"></textarea></div>
+<div class="item">data:<textarea id="data"  style="width:500px;height:200px"></textarea></div>
+<button id="gen">生成</button>
+
+<div id="result" style="width:500px;height:200px;border:1px solid #aaa"></div>
 </body>
+<script>
+    function getData(jsonstr) {
+
+        var json = (new Function("return " + jsonstr))();
+        return json;
+    }
+    function show(str) {
+        $("#result").html(str);
+    }
+    $(function () {
+        $("#gen").click(function () {
+            var tplstr = $("#tpl").val();
+            var data = getData($("#data").val());
+            var tpl = Filterjs(tplstr);
+            var render = tpl.render(data);
+            show(render);
+        });
+
+    });
+</script>
 </html>

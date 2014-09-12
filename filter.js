@@ -75,7 +75,7 @@
         console.log(str);
 
         try {
-            var func = new Function("filters", str);
+            var func = new Function("data","filters", str);
             g_templates[str] = func;
             return func;
         }
@@ -102,12 +102,16 @@
         return f + '(' + param + ')';
 
     }
+    function getFilters(filters)
+    {
+        return  extend(filters, g_filters);
+    }
 
     var Filterjs = function (tpl, config) {
         if (this instanceof Filterjs) {
             this._tpl = tpl;
             this._config = extend(CONFIG, config);
-            this.filters = extend({}, g_filters);
+            this.filters = {};
         } else {
             return new Filterjs(tpl, config);
         }
@@ -121,7 +125,7 @@
     Filterjs.prototype = {
         render: function (data) {
             var func = compile(this._tpl, this._config);
-            var result = func(data, g_filters);
+            var result = func(data, getFilters(this.filters));
             return result;
         },
         register: function () {
@@ -135,6 +139,8 @@
             extend(this._config, config);
             return this;
         }
+
+
 
     }
     /*******************************************************
