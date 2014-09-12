@@ -14,6 +14,25 @@
         CONFIG = {
             cache: true         //是否缓存模板编译后的函数
         };
+    /*******************************************************
+     private functions
+     *******************************************************/
+    function register(context) {
+        var a = arguments;
+        if (a.length <= 0)
+            return;
+        if (typeof a[0] === "string") {
+            if (!funcNameReg.test(a[0])) {
+                throw '"' + a[0] + '" is not valid filter name.';
+            }
+            if (typeof a[1] !== "function")
+                throw "need a function param.";
+            context[a[0]] = a[1];
+        }
+        else {
+            extend(context, a[0]);
+        }
+    }
 
     function extend(a, b) {
         if (!b || !a)
@@ -88,20 +107,16 @@
         if (this instanceof Filterjs) {
             this._tpl = tpl;
             this._config = extend(CONFIG, config);
+            this.filters = extend({}, g_filters);
         } else {
             return new Filterjs(tpl, config);
         }
-
-
     }
     Filterjs.version = VERSION;
 
-    Filterjs.register = function (name, func) {
-        if (funcNameReg.test(name)) {
-            g_filters[name] = func;
-            return this;
-        }
-        throw '"' + name + '" is not valid filter name.';
+    Filterjs.register = function () {
+        register(g_filters, arguments);
+        return this;
     };
     Filterjs.prototype = {
         render: function (data) {
@@ -110,34 +125,28 @@
             return result;
         },
         register: function () {
-            var a = arguments;
-            if (a.length <= 0)
-                return;
-            if (typeof a[0] === "string") {
-                if (!funcNameReg.test(a[0])) {
-                    throw '"' + a[0] + '" is not valid filter name.';
-                }
-                if (typeof a[1] !== "function")
-                    throw "need a function param.";
-                this.filters[a[0]] = a[1];
-            }
-            else {
-                extend(this.filters, a[0]);
-            }
-        },
-        unregister: function (name) {
-            if (this.filters.hasOwnProperty(name)) {
-                return delete this.filters[name];
-            }
+            register(this.filters, arguments);
+            return this;
         },
         config: function (config) {
             if (config == null) {
                 return this._config;
             }
             extend(this._config, config);
+            return this;
         }
 
     }
+    /*******************************************************
+     filter functions
+     *******************************************************/
+    Filterjs.register("trim", function (value) {
+        return value.trim();
+    });
+
+    /*******************************************************
+     module define & exports
+     *******************************************************/
     Filterjs.noConflict = function () {
         globalScope.Filterjs = oldGlobalMoment;
         return Filterjs;
