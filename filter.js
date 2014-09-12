@@ -14,23 +14,20 @@
         CONFIG = {
             cache: true         //是否缓存模板编译后的函数
         };
+
     /*******************************************************
      private functions
      *******************************************************/
-    function register(context) {
+    function register(context, name, func) {
         var a = arguments;
-        if (a.length <= 0)
-            return;
-        if (typeof a[0] === "string") {
-            if (!funcNameReg.test(a[0])) {
-                throw '"' + a[0] + '" is not valid filter name.';
+
+        if (typeof name === "string") {
+            if (!funcNameReg.test(name)) {
+                throw '"' + name + '" is not a valid filter name.';
             }
-            if (typeof a[1] !== "function")
+            if (typeof func !== "function")
                 throw "need a function param.";
-            context[a[0]] = a[1];
-        }
-        else {
-            extend(context, a[0]);
+            context[name] = func;
         }
     }
 
@@ -75,7 +72,7 @@
         console.log(str);
 
         try {
-            var func = new Function("data","filters", str);
+            var func = new Function("data", "filters", str);
             g_templates[str] = func;
             return func;
         }
@@ -102,8 +99,8 @@
         return f + '(' + param + ')';
 
     }
-    function getFilters(filters)
-    {
+
+    function getFilters(filters) {
         return  extend(filters, g_filters);
     }
 
@@ -118,8 +115,8 @@
     }
     Filterjs.version = VERSION;
 
-    Filterjs.register = function () {
-        register(g_filters, arguments);
+    Filterjs.register = function (name, func) {
+        register(g_filters, name, func);
         return this;
     };
     Filterjs.prototype = {
@@ -128,8 +125,8 @@
             var result = func(data, getFilters(this.filters));
             return result;
         },
-        register: function () {
-            register(this.filters, arguments);
+        register: function (name, func) {
+            register(this.filters, name, func);
             return this;
         },
         config: function (config) {
@@ -139,17 +136,28 @@
             extend(this._config, config);
             return this;
         }
-
-
-
     }
     /*******************************************************
      filter functions
      *******************************************************/
-    Filterjs.register("trim", function (value) {
+    Filterjs.register("trim",function (value) {
         return value.trim();
-    });
+    }).register('lower',function (value) {
+            if (typeof value === 'string') return value.toLowerCase();
+            return value;
 
+        }).register('upper', function (value) {
+            if (typeof value === 'string') return value.toUpperCase();
+            return value;
+        }).register('length', function (value,len) {
+            if (typeof value === 'string')
+            {
+                if (value.length > len)
+                    return value.substring(0, len - 3) + '...';
+                return value;
+            }
+            return value;
+        });
     /*******************************************************
      module define & exports
      *******************************************************/
