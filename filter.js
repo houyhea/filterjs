@@ -190,7 +190,7 @@
             return value.toFixed(num);
         }
         return value;
-    }).register('', function (value, num) {
+    }).register('toExponential', function (value, num) {
             if (typeof value === 'number') {
                 return value.toExponential(num);
             }
