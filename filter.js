@@ -184,12 +184,17 @@
         return value;
 
     });
-    Filterjs.register('toFixed', function (value, num) {
+    Filterjs.register('toFixed',function (value, num) {
         if (typeof value === 'number') {
             return value.toFixed(num);
         }
         return value;
-    });
+    }).register('', function (value, num) {
+            if (typeof value === 'number') {
+                return value.toExponential(num);
+            }
+            return value;
+        });
 
     /*******************************************************
      module define & exports
