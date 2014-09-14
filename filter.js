@@ -146,18 +146,51 @@
             if (typeof value === 'string') return value.toLowerCase();
             return value;
 
-        }).register('upper', function (value) {
+        }).register('upper',function (value) {
             if (typeof value === 'string') return value.toUpperCase();
             return value;
-        }).register('length', function (value,len) {
-            if (typeof value === 'string')
-            {
+        }).register('truncate',function (value, len) {
+            if (typeof value === 'string') {
                 if (value.length > len)
                     return value.substring(0, len) + '...';
                 return value;
             }
             return value;
+        }).register('length',function (value) {
+            if (typeof value === 'string') {
+                return value.length;
+            }
+            return value;
+        }).register('substr',function (value, start, len) {
+            if (typeof value === 'string') {
+                return value.substr(start, len);
+            }
+            return value;
+        }).register('substring', function (value, start, stop) {
+            if (typeof value === 'string') {
+                return value.substring(start, stop);
+            }
+            return value;
         });
+    Filterjs.register('humanize', function (value, trueStr, falseStr) {
+        return value ? truestr : falsestr;
+    });
+    Filterjs.register('switch', function (value, caseArray) {
+        //caseArray:[{"key":"","value":""},{"key":"","value":""}]
+        for (var i = 0; i < caseArray.length; i++) {
+            if (value == caseArray[i].key)
+                return caseArray[i].value;
+        }
+        return value;
+
+    });
+    Filterjs.register('toFixed', function (value, num) {
+        if (typeof value === 'number') {
+            return value.toFixed(num);
+        }
+        return value;
+    });
+
     /*******************************************************
      module define & exports
      *******************************************************/
