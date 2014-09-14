@@ -73,7 +73,8 @@
 
         try {
             var func = new Function("data", "filters", str);
-            g_templates[str] = func;
+            if (config.cache)
+                g_templates[str] = func;
             return func;
         }
         catch (err) {
@@ -195,7 +196,12 @@
             }
             return value;
         });
-
+    Filterjs.register('join', function (value, separator) {
+        if (typeof value === 'array') {
+            return value.join(separator);
+        }
+        return value;
+    });
     /*******************************************************
      module define & exports
      *******************************************************/
